@@ -1,21 +1,10 @@
 # SpectralBackends.jl
 
-Zero-dependency Julia package providing a unified spectral-transform backend type hierarchy
-for the [jbphyswx](https://github.com/jbphyswx) ecosystem.
-
-## Motivation
-
-Multiple packages (`FlowFieldSpectra.jl`, `ScatteringTransforms.jl`,
-`FlowInvariantTransfer.jl`, …) independently defined near-identical spectral-backend type
-hierarchies. `SpectralBackends.jl` is the single source of truth — downstream packages
-import these types instead of maintaining local copies.
-
-These types describe **which mathematical transform** to use, not **where/how to execute**
-(which is handled by [`ComputationalBackends.jl`](../ComputationalBackends.jl)).
+Zero-dependency Julia package defining dispatch types for spectral-transform algorithm selection.
 
 ## Exported Types
 
-| Type | Grid requirement | Library (consumer extension) |
+| Type | Grid requirement | Typical library |
 |---|---|---|
 | `DirectSumBackend` | Any | None (always available) |
 | `FFTBackend` | Uniform Cartesian | FFTW.jl |
@@ -24,18 +13,18 @@ These types describe **which mathematical transform** to use, not **where/how to
 | `NUFSHTBackend` | Scattered spherical | NUFSHT.jl |
 | `AutoSpectral` | Any | Best available |
 
+All types are subtypes of `AbstractSpectralBackend`.
+
 ## Usage
 
 ```julia
 using SpectralBackends: SpectralBackends as SB
 
-# Direct use
+# Select a spectral backend for dispatch
 backend = SB.FFTBackend()
-
-# Auto-selection (resolved by consumer package)
 backend = SB.AutoSpectral()
 
-# Type dispatch in consumer package
+# Type dispatch in your own package
 function compute_spectrum(::SB.FFTBackend, data, ...)
     # FFTW-based implementation
 end
