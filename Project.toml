@@ -1,0 +1,10 @@
+name = "SpectralBackends"
+uuid = "289ded02-b044-41b2-8b2d-71f2a47755d1"
+version = "0.1.0"
+authors = ["Jordan Benjamin <jordantbenjamin@gmail.com>"]
+
+[workspace]
+projects = ["test"]
+
+[compat]
+julia = "1.10"
